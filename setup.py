@@ -6,7 +6,7 @@ import sys
 from setuptools import setup
 from setuptools.command.install import install
 
-VERSION = "0.2.3"
+VERSION = "1.0.0"
 
 
 def readme():
@@ -36,9 +36,9 @@ setup(
     description="Format messages and post to Microsoft Teams.",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/rveachkc/pymsteams",
-    author="Ryan Veach",
-    author_email="rveach@gmail.com",
+    url="https://github.com/mroussamamessabih-emirates/pymsteams",
+    author="Oussama Messabih",
+    author_email="oussama.messabih@emirates.com",
     license="Apache",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -53,7 +53,7 @@ setup(
         "Topic :: Office/Business",
         "Topic :: Office/Business :: Groupware",
     ],
-    keywords=['Microsoft', 'Teams'],
+    keywords=['Microsoft', 'Teams', 'Workflow'],
     packages=['pymsteams'],
     install_requires=[
         'requests>=2.20.0',

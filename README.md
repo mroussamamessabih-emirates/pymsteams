@@ -1,18 +1,12 @@
 # pymsteams
 
-## Important: [Ongoing Support and Request for Maintainers](https://github.com/rveachkc/pymsteams/issues/151)
+Python Wrapper Library to send requests to Microsoft Teams via Microsoft Power Automate workflows.
 
-Looking for new maintainers. Please see https://github.com/rveachkc/pymsteams/issues/151
+I have created this libabry because Microsoft Teams Webhook is retiring [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/)
 
-[![CircleCI](https://circleci.com/gh/rveachkc/pymsteams/tree/master.svg?style=shield)](https://circleci.com/gh/rveachkc/pymsteams/tree/master) [![PyPI version](https://badge.fury.io/py/pymsteams.svg)](https://badge.fury.io/py/pymsteams)
+## Overview
 
-Python Wrapper Library to send requests to Microsoft Teams Webhooks.
-Microsoft refers to these messages as Connector Cards.  A message can be sent with only the main Connector Card, or additional sections can be included into the message.
-
-This library uses Webhook Connectors for Microsoft Teams.  Please visit the following Microsoft Documentation link for instructions on how to obtain the correct url for your Channel: https://dev.outlook.com/Connectors/GetStarted#creating-messages-through-office-365-connectors-in-microsoft-teams
-
-Please refer to the Microsoft Documentation for the most up to date screenshots.
-https://dev.outlook.com/connectors/reference
+This library allows sending messages with rich formatting to Microsoft Teams by utilizing Power Automate workflows. Messages can include simple text, titles, link buttons, and more. You can also use asynchronous operations to send messages in parallel.
 
 ## Installation
 
@@ -22,236 +16,109 @@ Install with pip:
 pip install pymsteams
 ```
 
-Install with async capabilities (python 3.6+):
-
-```bash
-pip install pymsteams[async]
-```
-
-#### Python 2 Installation
-
-At time of writing, the latest release supported by Python 2 is [Version 0.1.16](https://github.com/rveachkc/pymsteams/releases/tag/0.1.16)
-
 ## Usage
 
 ### Creating ConnectorCard Messages
 
-This is the simplest implementation of pymsteams.  It will send a message to the teams webhook url with plain text in the message.
+Below is a basic example demonstrating how to send a message using a Power Automate workflow URL:
 
 ```python
-import pymsteams
+from pymsteams import connectorcard
 
-# You must create the connectorcard object with the Microsoft Webhook URL
-myTeamsMessage = pymsteams.connectorcard("<Microsoft Webhook URL>")
+# You must create the connectorcard object with the Power Automate URL
+myTeamsMessage = connectorcard("<Power Automate URL>")
 
-# Add text to the message.
-myTeamsMessage.text("this is my text")
+# Add text to the message
+myTeamsMessage.text("This is my text")
 
-# send the message.
+# Send the message
 myTeamsMessage.send()
 ```
 
-### Creating CreatorCard Messages to send via async loop
+### Asynchronous ConnectorCard Messages
+
+You can send messages asynchronously using `async_connectorcard`. This is useful when sending multiple messages or performing other asynchronous tasks.
 
 ```python
 import asyncio
-import pymsteams
+from pymsteams import async_connectorcard
 
 loop = asyncio.get_event_loop()
 
-# the async_connectorcard object is used instead of the normal one.
-myTeamsMessage = pymsteams.async_connectorcard("<Microsoft Webhook URL>")
+# The async_connectorcard object is used for asynchronous operations
+myTeamsMessage = async_connectorcard("<Power Automate URL>")
 
-# all formatting for the message should be the same
-myTeamsMessage.text("This is my message")
+# Add text to the message
+myTeamsMessage.text("This is my async message")
 
-# to send the message, pass to the event loop
+# Send the message asynchronously
 loop.run_until_complete(myTeamsMessage.send())
 ```
 
-Please visit the python asyncio documentation for more info on using asyncio and the event loop: https://docs.python.org/3/library/asyncio-eventloop.html
+### Optional Formatting Methods
 
+#### Add a Title
 
-### Optional Formatting Methods for Cards
+You can add a title to the message, which will be displayed prominently:
 
-#### Add a title
 ```python
 myTeamsMessage.title("This is my message title")
 ```
 
-#### Add a link button
-```python
-myTeamsMessage.addLinkButton("This is the button Text", "https://github.com/rveachkc/pymsteams/")
-```
+#### Add a Link Button
 
-#### Change URL
-This is useful in the event you need to post the same message to multiple rooms.
-```python
-myTeamsMessage.newhookurl("<My New URL>")
-```
-
-#### Set Color Theme
-This sets the theme color of the card. The parameter is expected to be a hex color code without the hash or the string red.
-```python
-myTeamsMessage.color("<Hex Color Code>")
-```
-
-#### Preview your object
-This is a simple print command to view your connector card message object before sending.
-```python
-myTeamsMessage.printme()
-```
-
-### Adding sections to the Connector Card Message
-To create a section and add various formatting elements
-```python
-# create the section
-myMessageSection = pymsteams.cardsection()
-
-# Section Title
-myMessageSection.title("Section title")
-
-# Activity Elements
-myMessageSection.activityTitle("my activity title")
-myMessageSection.activitySubtitle("my activity subtitle")
-myMessageSection.activityImage("http://i.imgur.com/c4jt321l.png")
-myMessageSection.activityText("This is my activity Text")
-
-# Facts are key value pairs displayed in a list.
-myMessageSection.addFact("this", "is fine")
-myMessageSection.addFact("this is", "also fine")
-
-# Section Text
-myMessageSection.text("This is my section text")
-
-# Section Images
-myMessageSection.addImage("http://i.imgur.com/c4jt321l.png", ititle="This Is Fine")
-
-# Add your section to the connector card object before sending
-myTeamsMessage.addSection(myMessageSection)
-```
-You may also add multiple sections to a connector card message as well.
-```python
-# Create Section 1
-Section1 = pymsteams.cardsection()
-Section1.text("My First Section")
-
-# Create Section 2
-Section2 = pymsteams.cardsection()
-Section2.text("My Second Section")
-
-# Add both Sections to the main card object
-myTeamsMessage.addSection(Section1)
-myTeamsMessage.addSection(Section2)
-
-# Then send the card
-myTeamsMessage.send()
-```
-### Adding potential actions to the Connector Card Message
-To create a actions on which the user can interect with in MS Teams
-To find out more information on what actions can be used, please visit https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/connectors/connectors-using#setting-up-a-custom-incoming-webhook
+Add a link button to your message to redirect users to a specific URL:
 
 ```python
-myTeamsMessage = pymsteams.connectorcard("<Microsoft Webhook URL>")
-
-myTeamsPotentialAction1 = pymsteams.potentialaction(_name = "Add a comment")
-myTeamsPotentialAction1.addInput("TextInput","comment","Add a comment here",False)
-myTeamsPotentialAction1.addAction("HttpPost","Add Comment","https://...") 
-
-myTeamsPotentialAction2 = pymsteams.potentialaction(_name = "Set due date")
-myTeamsPotentialAction2.addInput("DateInput","dueDate","Enter due date")
-myTeamsPotentialAction2.addAction("HttpPost","save","https://...")
-
-myTeamsPotentialAction3 = pymsteams.potentialaction(_name = "Change Status")
-myTeamsPotentialAction3.choices.addChoices("In progress","0")
-myTeamsPotentialAction3.choices.addChoices("Active","1")
-myTeamsPotentialAction3.addInput("MultichoiceInput","list","Select a status",False)
-myTeamsPotentialAction3.addAction("HttpPost","Save","https://...")
-
-myTeamsMessage.addPotentialAction(myTeamsPotentialAction1)
-myTeamsMessage.addPotentialAction(myTeamsPotentialAction2)
-myTeamsMessage.addPotentialAction(myTeamsPotentialAction3)
-
-myTeamsMessage.summary("Test Message")
-
-myTeamsMessage.send()
+myTeamsMessage.addLinkButton("This is the button Text", "https://example.com")
 ```
-### Adding HTTP Post to potential actions in the Connector Card Message
+
+### Example: Sending a Message with a Title and Link Button
+
+Here's a complete example of sending a message with both a title and a link button:
 
 ```python
-myTeamsMessage = pymsteams.connectorcard("<Microsoft Webhook URL>")
+from your_module import connectorcard  # Replace 'your_module' with your module name
 
-myTeamsPotentialAction1 = pymsteams.potentialaction(_name = "Add a comment")
-# You can add a TextInput to your potential action like below - Please note the 2nd argment below as the id name
-myTeamsPotentialAction1.addInput("TextInput","comment","Add a comment here",False)
-# we use the 2nd argument above as the id name to parse the values into the body post like below.
-myTeamsPotentialAction1.addAction("HttpPost","Add Comment","https://...", "{{comment.value}}") 
-myTeamsMessage.addPotentialAction(myTeamsPotentialAction1)
+webhook_url = "<Power Automate URL>"
 
+# Create the connector card
+card = connectorcard(webhook_url)
+card.title("Important Notification")
+card.text("Please review the latest updates.")
+card.addLinkButton("Review Updates", "https://example.com/updates")
 
-myTeamsMessage.summary("Test Message")
-
-myTeamsMessage.send()
-
-# Notes:
-# If you post anything via teams, you will get some Javascript encoding happening via the post - For example:
-# Posting this:  {"name":"john", "comment" : "nice"}
-# Output will be:  b'{\\u0022name\\u0022:\\u0022john\\u0022, \\u0022comment\\u0022 : \\u0022nice\\u0022}'
-# i solved this issue by decoding unicode escape for a custom rest backend.
+# Send the message
+card.send()
 ```
 
-Please use Github issues to report any bugs or request enhancements.
+### Exception Handling
 
-## Troubleshooting HTTP response
+If the call to the Power Automate service fails, a `TeamsWebhookException` will be thrown. Ensure you handle this exception in your code:
 
-This module is really just a nice wrapper pointed at the Microsoft API. To help troubleshoot missing messages, the requests response content is saved to the connectorcard class attribute `last_http_response`.
-
-To get the last http status code:
 ```python
-import pymsteams
-
-myTeamsMessage = pymsteams.connectorcard("<Microsoft Webhook URL>")
-myTeamsMessage.text("this is my text")
-myTeamsMessage.send()
-
-last_status_code = myTeamsMessage.last_http_response.status_code
+try:
+    card.send()
+except TeamsWebhookException as e:
+    print(f"Failed to send message: {e}")
 ```
-
-More info on the Response Content is available in the requests documentation, [link](https://2.python-requests.org/en/master/user/quickstart/#response-content).
-
-## Exceptions
-
-If the call to the Microsoft Teams webhook service fails, a `TeamsWebhookException` will be thrown.
 
 ## Testing
 
-In order to test in your environment with pytest, set the environment variable `MS_TEAMS_WEBHOOK` to the Microsoft Teams Webhook url you would like to use.
+In order to test in your environment with `pytest`, set the environment variable `MS_TEAMS_WORKFLOW` to the Power Automate workflow URL you would like to use.
 
 Then, from the root of the repo, install the requirements and run pytest.
 
 ```bash
 pip install -r dev-requirements.txt
-MS_TEAMS_WEBHOOK=MicrosoftWebhookURL
-export MS_TEAMS_WEBHOOK
-pytest --cov=./pymsteams --cov-report=term-missing --cov-branch
+MS_TEAMS_WORKFLOW=<PowerAutomateURL>
+export MS_TEAMS_WORKFLOW
+pytest --cov=./your_module --cov-report=term-missing --cov-branch  # Replace 'your_module' with your module name
 ```
 
-This will send two MS Teams messages describing how they are formatted.  Manually validate that the message comes through as expected.
+## Docs
 
-## Certificate Validation
+- [Send a message in Teams using Power Automate](https://learn.microsoft.com/en-us/power-automate/teams/send-a-message-in-teams)
+- [apprise Notify_workflows](https://github.com/caronc/apprise/wiki/Notify_workflows)
+- [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/)
 
-In some situations, a custom CA bundle must be used.  This can be set on class initialization, by setting the verify parameter.
-
-```python
-import pymsteams
-
-# set custom ca bundle
-msg = pymsteams.connectorcard("<Microsoft Webhook URL>", verify="/path/to/file")
-
-# disable CA validation
-msg = pymsteams.connectorcard("<Microsoft Webhook URL>", verify=False)
-```
-
-Set to either the path of a custom CA bundle or False to disable.
-
-The requests documentation can be referenced for full details: https://2.python-requests.org/en/master/user/advanced/#ssl-cert-verification
