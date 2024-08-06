@@ -2,7 +2,7 @@
 
 Python Wrapper Library to send requests to Microsoft Teams via Microsoft Power Automate workflows.
 
-I have created this libabry because Microsoft Teams Webhook is retiring [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/)
+I have created this library because the Microsoft Teams Webhook is being retired. [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/)
 
 ## Overview
 
