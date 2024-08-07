@@ -54,7 +54,7 @@ setup(
         "Topic :: Office/Business :: Groupware",
     ],
     keywords=['Microsoft', 'Teams','Power','Automate', 'Workflow'],
-    packages=['pymsteams', 'pymsteams-workflow'],
+    packages=['pymsteams'],
     install_requires=[
         'requests>=2.20.0',
     ],
