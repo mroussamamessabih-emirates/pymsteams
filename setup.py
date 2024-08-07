@@ -31,9 +31,9 @@ class VerifyVersionCommand(install):
 
 
 setup(
-    name="pymsteams",
+    name="pymsteams-workflow",
     version=VERSION,
-    description="Format messages and post to Microsoft Teams.",
+    description="Format messages and post to Microsoft Teams through Microsoft Power Automate WorkFlow.",
     long_description=readme(),
     long_description_content_type="text/markdown",
     url="https://github.com/mroussamamessabih-emirates/pymsteams",
@@ -53,8 +53,8 @@ setup(
         "Topic :: Office/Business",
         "Topic :: Office/Business :: Groupware",
     ],
-    keywords=['Microsoft', 'Teams', 'Workflow'],
-    packages=['pymsteams'],
+    keywords=['Microsoft', 'Teams','Power','Automate', 'Workflow'],
+    packages=['pymsteams', 'pymsteams-workflow'],
     install_requires=[
         'requests>=2.20.0',
     ],
