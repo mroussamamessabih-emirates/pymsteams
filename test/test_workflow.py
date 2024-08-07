@@ -4,7 +4,7 @@ import pytest
 from unittest.mock import patch
 import asyncio
 
-# os.environ["MS_TEAMS_WORKFLOW"] = "https://httpstat.us/200"
+os.environ["MS_TEAMS_WORKFLOW"] = "https://httpstat.us/200"
 
 # add scripts to the path
 sys.path.append(
