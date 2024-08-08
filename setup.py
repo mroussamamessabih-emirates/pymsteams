@@ -36,7 +36,7 @@ setup(
     description="Format messages and post to Microsoft Teams through Microsoft Power Automate WorkFlow.",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/mroussamamessabih-emirates/pymsteams",
+    url="https://github.com/th3happybit/pymsteams/",
     author="Oussama Messabih",
     author_email="oussamamessabih02@gmail.com",
     license="Apache",

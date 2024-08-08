@@ -91,7 +91,7 @@ class connectorcard:
     
     def send(self):
         headers = {
-            'User-Agent': 'SESSMSTeams',
+            'User-Agent': 'MSTeams',
             'Content-Type': 'application/json'
         }
 
