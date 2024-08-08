@@ -38,7 +38,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/mroussamamessabih-emirates/pymsteams",
     author="Oussama Messabih",
-    author_email="oussama.messabih@emirates.com",
+    author_email="oussamamessabih02@gmail.com",
     license="Apache",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
